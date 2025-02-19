@@ -12,6 +12,6 @@ mkdir -p {traefik,letsencrypt,middleware}
 touch letsencrypt/acme.json
 chmod 600 letsencrypt/acme.json
 
-docker compose up -d
+docker compose up
 
 echo "Setup complete. Check logs with: docker compose logs -f"
