@@ -4,7 +4,8 @@ import (
     "log"
     "net"
     "net/http"
-    "io"
+    "os"
+    "fmt"
 )
 
 type DNSValidator struct {
@@ -50,18 +51,10 @@ func (v *DNSValidator) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 }
 
 func getServerIP() (string, error) {
-    resp, err := http.Get("https://api.ipify.org")
-    if err != nil {
-        return "", err
+    if ip := os.Getenv("SERVER_IP"); ip != "" {
+        return ip, nil
     }
-    defer resp.Body.Close()
-    
-    ip, err := io.ReadAll(resp.Body)
-    if err != nil {
-        return "", err
-    }
-    
-    return string(ip), nil
+    return "", fmt.Errorf("SERVER_IP environment variable not set")
 }
 
 func contains(slice []string, item string) bool {

@@ -14,9 +14,10 @@ requests.
 ## Quick Start
 
 1. Clone repository
-2. Configure email in `.env`:
+2. Configure in `.env`:
    ```bash
    ACME_EMAIL=your-email@domain.com
+   SERVER_IP=your-server-ip
    ```
 3. Run setup:
    ```bash
@@ -30,6 +31,7 @@ requests.
 | Variable   | Description       | Required |
 | ---------- | ----------------- | -------- |
 | ACME_EMAIL | LetsEncrypt email | Yes      |
+| SERVER_IP  | Server IP         | Yes      |
 
 ### Adding Domains
 
