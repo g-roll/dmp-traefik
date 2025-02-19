@@ -22,7 +22,7 @@ entryPoints:
       middlewares:
         - dns-check@file
       tls:
-        certResolver: letsencrypt
+        options: default
 
 providers:
   docker:
@@ -37,7 +37,7 @@ providers:
 certificatesResolvers:
   letsencrypt:
     acme:
-      email: "${ACME_EMAIL}"
+      email: ${ACME_EMAIL}
       storage: "/letsencrypt/acme.json"
       httpChallenge:
         entryPoint: web
@@ -48,3 +48,11 @@ http:
       forwardAuth:
         address: "http://dns-validator:8080"
         trustForwardHeader: true
+  routers:
+    ssl-router:
+      rule: "HostSNI(`*`)"
+      service: noop@internal
+      tls:
+        certResolver: letsencrypt
+      middlewares:
+        - dns-check@file
