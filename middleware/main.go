@@ -4,6 +4,7 @@ import (
     "log"
     "net"
     "net/http"
+    "io"
 )
 
 type DNSValidator struct {
@@ -49,13 +50,18 @@ func (v *DNSValidator) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 }
 
 func getServerIP() (string, error) {
-    conn, err := net.Dial("udp", "8.8.8.8:53")
+    resp, err := http.Get("https://api.ipify.org")
     if err != nil {
         return "", err
     }
-    defer conn.Close()
-    localAddr := conn.LocalAddr().(*net.UDPAddr)
-    return localAddr.IP.String(), nil
+    defer resp.Body.Close()
+    
+    ip, err := io.ReadAll(resp.Body)
+    if err != nil {
+        return "", err
+    }
+    
+    return string(ip), nil
 }
 
 func contains(slice []string, item string) bool {
