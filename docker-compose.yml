@@ -21,11 +21,12 @@ services:
   dns-validator:
     build: ./middleware
     restart: unless-stopped
+    env_file: .env
     environment:
       - SERVER_IP=${SERVER_IP}
     networks:
       - proxy
-
+      
 networks:
   proxy:
     name: proxy
