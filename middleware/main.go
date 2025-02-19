@@ -32,22 +32,23 @@ func NewDNSValidator() (*DNSValidator, error) {
 }
 
 func (v *DNSValidator) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+    log.Printf("Middleware called for request: %s %s", req.Method, req.Host)
     host := req.Host
 
     ips, err := net.LookupHost(host)
     if err != nil || len(ips) == 0 {
-        log.Printf("DNS not resolved for %s", host)
+        log.Printf("DNS check failed - not resolved: %s (error: %v)", host, err)
         http.Error(rw, "DNS not configured", http.StatusServiceUnavailable)
         return
     }
 
     if !contains(ips, v.expectedIP) {
-        log.Printf("DNS does not point to server IP for %s", host)
+        log.Printf("DNS check failed - wrong IP: %s (found IPs: %v, expected: %s)", host, ips, v.expectedIP)
         http.Error(rw, "DNS misconfigured", http.StatusServiceUnavailable)
         return
     }
 
-    log.Printf("DNS validated for %s", host)
+    log.Printf("DNS check passed: %s -> %s", host, v.expectedIP)
     rw.WriteHeader(http.StatusOK)
 }
 

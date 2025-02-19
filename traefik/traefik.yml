@@ -6,7 +6,7 @@ api:
   dashboard: false
 
 log:
-  level: INFO
+  level: DEBUG
 
 entryPoints:
   web:
@@ -22,7 +22,7 @@ entryPoints:
       middlewares:
         - dns-check@file
       tls:
-        options: default
+        certResolver: letsencrypt
 
 providers:
   docker:
@@ -48,11 +48,3 @@ http:
       forwardAuth:
         address: "http://dns-validator:8080"
         trustForwardHeader: true
-  routers:
-    ssl-router:
-      rule: "HostSNI(`*`)"
-      service: noop@internal
-      tls:
-        certResolver: letsencrypt
-      middlewares:
-        - dns-check@file
