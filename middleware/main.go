@@ -4,8 +4,6 @@ import (
     "log"
     "net"
     "net/http"
-    "os"
-    "time"
 )
 
 type DNSValidator struct {
