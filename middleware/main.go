@@ -18,6 +18,7 @@ func main() {
         log.Fatal(err)
     }
 
+    log.Printf("Config - ACME_EMAIL: %s", os.Getenv("ACME_EMAIL"))
     log.Printf("DNS Validator started. Server IP: %s", validator.expectedIP)
     http.ListenAndServe(":8080", validator)
 }

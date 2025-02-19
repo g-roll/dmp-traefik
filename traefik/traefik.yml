@@ -19,10 +19,10 @@ entryPoints:
   websecure:
     address: ":443"
     http:
-      tls:
-        certResolver: letsencrypt
       middlewares:
         - dns-check@file
+      tls:
+        certResolver: letsencrypt
 
 providers:
   docker:
